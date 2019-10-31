@@ -1,8 +1,25 @@
 /*
- * Graphics.h
+ * This library is free software:
  *
- *  Created on: 2 Aug 2019
- *      Author: peter
+ * 		- You are allowed to execute the code how
+ * 		  you want to.
+ * 		- This code is open source, you are allowed
+ * 		  to inspect what the code does.
+ * 		- You are allowed to share/redistribute the
+ * 		  code on your own to make it accessible to
+ * 		  others or for any reason.
+ * 		- You are allowed to modify the code and
+ * 		  improve it. Hopefully you share your
+ * 		  modifications to make it available to all.
+ *
+ * Check out my website:	https://hedgehogs-mind.com
+ * My github account:	  	https://github.com/hedgehogs-mind
+ * Contact me:				peter@hedgehogs-mind.com
+ *
+ *
+ * Yours sincerely,
+ *
+ * Peter Kuhmann
  */
 
 #ifndef UC_AVR_GRAPHICS_GRAPHICS_H_
