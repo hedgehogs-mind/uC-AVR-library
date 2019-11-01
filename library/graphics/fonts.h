@@ -52,7 +52,7 @@
 #endif
 
 #include <avr/pgmspace.h>
-#include "graphics.h"
+#include "../graphics/graphics.h"
 
 #define UC_FONTS_SETTINGS_BIT_BC_MASK	(1 << 7)
 #define UC_FONTS_SETTINGS_BIT_BCS_MASK 	(1 << 6)
