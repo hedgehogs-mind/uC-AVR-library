@@ -1,5 +1,5 @@
 /**
- * This tiny library is used to communicate with
+ * This tiny software is used to communicate with
  * peripherals over the OneWire protocol.
  *
  * Options for this library:
@@ -11,7 +11,7 @@
  * 				-> In case no macro has been defined, OW_TIMING_PRECISE will be defined here!
  *
  *
- * This library is free software:
+ * This is free software:
  *
  * 		- You are allowed to execute the code how
  * 		  you want to.

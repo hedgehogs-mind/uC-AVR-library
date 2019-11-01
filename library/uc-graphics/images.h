@@ -21,7 +21,7 @@
  *
  *
  *
- * This library is free software:
+ * This is free software:
  *
  * 		- You are allowed to execute the code how
  * 		  you want to.
