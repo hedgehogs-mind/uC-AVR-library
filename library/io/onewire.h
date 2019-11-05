@@ -34,6 +34,9 @@
  * Peter Kuhmann
  */
 
+#ifndef UC_IO_ONEWIRE_H_
+#define UC_IO_ONEWIRE_H_
+
 #include <stdint.h>
 #include <util/delay.h>
 #include <avr/io.h>
@@ -271,3 +274,5 @@ void ow_send_rom_skip(volatile uint8_t *DDRx,
 
 	ow_send_byte(0xCC, DDRx, PORTx, Pxn);
 }
+
+#endif
