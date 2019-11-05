@@ -50,8 +50,13 @@
  *
  *
  * ATTENTION!: The timing is not super accurate. In a test,
- * the microcontroller was half a second behind the ideal timing
- * after 60 seconds!
+ * the microcontroller was less than half a second behind
+ * a stop watch after 60 seconds! (which is quite okay).
+ * In theory there should not even be that much of a delay,
+ * because "unused time", that was not enough for a further
+ * execution is added for the next update. Maybe my Quartz
+ * was just not good and the whole setup not calibrated
+ * good enough.    \(.–. )/
  *
  *
  *
@@ -82,7 +87,7 @@
 #ifndef UC_TIMING_TIMED_TASKS_H_
 #define UC_TIMING_TIMED_TASKS_H_
 
-#define USE_DUMMY_TIME_API
+//#define USE_DUMMY_TIME_API
 
 #ifndef API_GET_TIME_US
 	#ifndef USE_DUMMY_TIME_API
@@ -171,8 +176,8 @@ void uc_tt_remove_task(timed_task *task) {
 }
 
 /*
- * Calls the function associated with this task and
- * updates the last executed time stamp of the task.
+ * Calls the function associated with this task does
+ * not update the task's last execution time stamp.
  *
  * If the task's EXECUTE_ONLY_ONCE flag is set, the
  * task will be deactivated (before execution of the
@@ -184,7 +189,7 @@ void uc_tt_remove_task(timed_task *task) {
  */
 void uc_tt_execute_task(timed_task *task) {
 	if ( task->flags & (1 << UC_TT_FLAG_BIT_ACTIVE_STATUS) ) {
-		task->last_executed_us = API_GET_TIME_US;
+		//task->last_executed_us = API_GET_TIME_US; --> done decentralized
 
 		if ( task->flags & (1 << UC_TT_FLAG_BIT_EXECUTE_ONLY_ONCE) ) {
 			uc_tt_deactivate_task(task);
@@ -209,11 +214,10 @@ void uc_tt_activate_task(timed_task *task) {
 	if ( !(task->flags & (1 << UC_TT_FLAG_BIT_ACTIVE_STATUS)) ) {
 		task->flags |= (1 << UC_TT_FLAG_BIT_ACTIVE_STATUS);
 
+		task->last_executed_us = API_GET_TIME_US;
+
 		if ( task->flags & (1 << UC_TT_FLAG_BIT_EXECUTE_WITHOUT_DELAY) ) {
 			uc_tt_execute_task(task);
-		} else {
-			//"Start timer"
-			task->last_executed_us = API_GET_TIME_US;
 		}
 	}
 }
@@ -228,6 +232,8 @@ void uc_tt_activate_task(timed_task *task) {
 void uc_tt_update() {
 	uint64_t current_time = 0;
 	timed_task *current_task = 0;
+	uint64_t diff = 0;
+	uint64_t interval = 0;
 
 	for ( uint8_t i = 0; i < UC_TT_TASK_BUFFER; i++ ) {
 		current_time = API_GET_TIME_US;
@@ -235,8 +241,22 @@ void uc_tt_update() {
 
 		if ( current_task > 0 ) {
 			if ( current_task->flags & (1 << UC_TT_FLAG_BIT_ACTIVE_STATUS) ) {
-				if ( current_time - current_task->last_executed_us > current_task->interval_us ) {
+				diff = current_time - current_task->last_executed_us;
+				interval = current_task->interval_us;
+
+				if ( diff >= interval ) {
+					current_task->last_executed_us = current_time;
 					uc_tt_execute_task(current_task);
+
+					//Execute as many times as we have waited too long
+					diff -= interval;
+					while ( diff >= interval ) {
+						uc_tt_execute_task(current_task);
+						diff -= interval;
+					}
+
+					//Add time that is left which is not enough for an execution yet.
+					current_task->last_executed_us += diff;
 				}
 			}
 		}
