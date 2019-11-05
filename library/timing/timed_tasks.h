@@ -88,7 +88,8 @@
 #endif
 
 #ifndef UC_TT_TASK_BUFFER
-#define UC_TT_TASK_BUFFER 8
+	//Change here or set macro before including this header file!
+	#define UC_TT_TASK_BUFFER 8
 #endif
 
 #define UC_TT_FLAG_BIT_ACTIVE_STATUS		 	0
