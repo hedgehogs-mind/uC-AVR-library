@@ -49,6 +49,11 @@
  *
  *
  *
+ * ATTENTION!: The timing is not super accurate. In a test,
+ * the microcontroller was half a second behind the ideal timing
+ * after 60 seconds!
+ *
+ *
  *
  * This is free software:
  *
