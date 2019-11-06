@@ -97,6 +97,10 @@
 	#endif
 #endif
 
+
+
+#ifdef API_GET_TIME_US
+
 #ifndef UC_TT_TASK_BUFFER
 	//Change here or set macro before including this header file!
 	#define UC_TT_TASK_BUFFER 8
@@ -262,5 +266,7 @@ void uc_tt_update() {
 		}
 	}
 }
+
+#endif
 
 #endif
